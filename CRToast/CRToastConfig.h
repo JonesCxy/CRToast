@@ -365,6 +365,11 @@ extern NSString *const kCRToastIdentifierKey;
  */
 extern NSString *const kCRToastCaptureDefaultWindowKey;
 
+/**
+ A BOOL setting whether the CRToast should show two buttons at the bottom that say "View" and "Dismiss"
+ */
+extern NSString *const kCRToastShowButtonsKey;
+
 #pragma mark - CRToast Interface
 @interface CRToast : NSObject <UIGestureRecognizerDelegate>
 

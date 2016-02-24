@@ -296,9 +296,12 @@ CRToastAnimationStepBlock CRToastOutwardAnimationsSetupBlock(CRToastManager *wea
     rootViewController.toastView = notificationView;
     self.statusBarView = statusBarView;
     
-    for (UIView *subview in _notificationWindow.rootViewController.view.subviews) {
-        subview.userInteractionEnabled = NO;
-    }
+    // Commenting this out because we want our buttons to be enabled
+    //    for (UIView *subview in _notificationWindow.rootViewController.view.subviews) {
+    //        if (![subview isKindOfClass:[UIButton class]]) {
+    //            subview.userInteractionEnabled = NO;
+    //        }
+    //    }
     
     _notificationWindow.rootViewController.view.userInteractionEnabled = YES;
     _notificationWindow.rootViewController.view.gestureRecognizers = notification.gestureRecognizers;

@@ -3,6 +3,7 @@
 //  Copyright (c) 2014-2015 Collin Ruffenach. All rights reserved.
 //
 
+//#import "CRToastManager.h"
 #import "CRToastView.h"
 #import "CRToast.h"
 #import "CRToastLayoutHelpers.h"
@@ -120,6 +121,31 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
         [self addSubview:subtitleLabel];
         self.subtitleLabel = subtitleLabel;
         
+        // The view button is purely for show - user cannot interact with it. I do this just so whoever is setting up the notification only needs to add a single tap recognizer.
+        UIButton *viewButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [viewButton setTitle:@"View" forState:UIControlStateNormal];
+        [viewButton.titleLabel setFont:self.toast.font];
+        [viewButton.titleLabel setTextColor:[UIColor blackColor]];
+        [viewButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        viewButton.layer.cornerRadius = 10.0;
+        viewButton.layer.borderColor = [UIColor grayColor].CGColor;
+        viewButton.layer.borderWidth = 1.0;
+        viewButton.userInteractionEnabled = NO;
+        [self addSubview:viewButton];
+        self.viewButton = viewButton;
+        
+        UIButton *dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [dismissButton setTitle:@"Dismiss" forState:UIControlStateNormal];
+        [dismissButton.titleLabel setFont:self.toast.font];
+        [dismissButton.titleLabel setTextColor:[UIColor blackColor]];
+        [dismissButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        dismissButton.layer.cornerRadius = 10.0;
+        dismissButton.layer.borderColor = [UIColor grayColor].CGColor;
+        dismissButton.layer.borderWidth = 1.0;
+        [dismissButton addTarget:self action:@selector(onDismissButtonTap:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:dismissButton];
+        self.dismissButton = dismissButton;
+        
         self.isAccessibilityElement = YES;
     }
     return self;
@@ -169,12 +195,15 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
                                                                   self.toast.imageAlignment,
                                                                   self.toast.showActivityIndicator,
                                                                   self.toast.activityViewAlignment);
-    
+
+    CGFloat buttonHeight = [self shouldShowButtons] ? 40.0 : 0.0;
+    // This is zero because the line height of the label text does put some padding between label and buttons
+    CGFloat buttonsLabelSpacing = 0.0;
     if (self.toast.subtitleText == nil) {
         self.label.frame = CGRectMake(x,
                                       statusBarYOffset,
                                       width,
-                                      CGRectGetHeight(contentFrame));
+                                      CGRectGetHeight(contentFrame) - buttonHeight - buttonsLabelSpacing - self.toast.preferredPadding);
     } else {
         CGFloat height = MIN([self.toast.text boundingRectWithSize:CGSizeMake(width, MAXFLOAT)
                                                            options:NSStringDrawingUsesLineFragmentOrigin
@@ -202,6 +231,19 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
                                               subtitleHeight);
     }
     
+    CGFloat buttonSpacing = 15.0;
+    CGFloat buttonWidth = (contentFrame.size.width - buttonSpacing - 2 * self.toast.preferredPadding)/2.0;
+    CGFloat buttonsY = CGRectGetMaxY(self.label.frame) + buttonsLabelSpacing;
+    if ([self shouldShowButtons]) {
+        self.viewButton.frame = CGRectMake(self.toast.preferredPadding, buttonsY, buttonWidth, buttonHeight);
+        self.dismissButton.frame = CGRectMake(CGRectGetMaxX(self.viewButton.frame) + buttonSpacing,
+                                              buttonsY, buttonWidth, buttonHeight);
+    } else {
+        self.viewButton.hidden = true;
+        self.dismissButton.hidden = true;
+    }
+
+    
     // Account for center alignment of text and an accessory view
     if ((showingImage || self.toast.showActivityIndicator)
         && (self.toast.activityViewAlignment == CRToastAccessoryViewAlignmentCenter
@@ -224,6 +266,8 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
                                       CGRectGetMinY(self.label.frame),
                                       CGRectGetWidth(self.label.frame),
                                       labelHeight);
+        
+        
         
         // Same thing as for Label
         self.subtitleLabel.center = (CGPoint) {
@@ -299,6 +343,16 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
             [self insertSubview:_backgroundView atIndex:0];
         }
     }
+}
+
+#pragma mark - Button taps
+
+- (void)onDismissButtonTap:(UIButton *)sender {
+    [CRToastManager dismissNotification:true];
+}
+
+- (BOOL)shouldShowButtons {
+    return self.toast.options[kCRToastShowButtonsKey] ? [self.toast.options[kCRToastShowButtonsKey] boolValue] : NO;
 }
 
 @end
