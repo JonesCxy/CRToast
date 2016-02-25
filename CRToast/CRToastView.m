@@ -122,12 +122,12 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
         self.subtitleLabel = subtitleLabel;
         
         // The view button is purely for show - user cannot interact with it. I do this just so whoever is setting up the notification only needs to add a single tap recognizer.
-        UIButton *viewButton = [self makeButton:@"View"];
+        UIButton *viewButton = [self makeButtonWithTitle:@"View"];
         viewButton.userInteractionEnabled = NO;
         [self addSubview:viewButton];
         self.viewButton = viewButton;
         
-        UIButton *dismissButton = [self makeButton:@"Dismiss"];
+        UIButton *dismissButton = [self makeButtonWithTitle:@"Dismiss"];
         [dismissButton addTarget:self action:@selector(onDismissButtonTap:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:dismissButton];
         self.dismissButton = dismissButton;
@@ -137,7 +137,7 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
     return self;
 }
 
-- (UIButton *)makeButton:(NSString *)title {
+- (UIButton *)makeButtonWithTitle:(NSString *)title {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
     [button.titleLabel setFont:self.toast.font];
