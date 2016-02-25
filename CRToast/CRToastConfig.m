@@ -231,6 +231,7 @@ NSString *const kCRToastAutorotateKey                       = @"kCRToastAutorota
 
 NSString *const kCRToastIdentifierKey                       = @"kCRToastIdentifierKey";
 NSString *const kCRToastCaptureDefaultWindowKey             = @"kCRToastCaptureDefaultWindowKey";
+NSString *const kCRToastShowButtonsKey                      = @"kCRToastShowButtonsKey";
 
 #pragma mark - Option Defaults
 
@@ -287,6 +288,8 @@ static BOOL                          kCRForceUserInteractionDefault         = NO
 static BOOL                          kCRAutoRotateDefault                   = YES;
 
 static BOOL                          kCRCaptureDefaultWindowDefault         = YES;
+
+static BOOL                          kCRShowButtonsDefault                  = NO;
 
 static NSDictionary *                kCRToastKeyClassMap                    = nil;
 
@@ -363,8 +366,11 @@ static NSDictionary *                kCRToastKeyClassMap                    = ni
                                 
                                 kCRToastAutorotateKey                       : NSStringFromClass([@(kCRAutoRotateDefault) class]),
                                 
-                                kCRToastCaptureDefaultWindowKey             : NSStringFromClass([@(kCRCaptureDefaultWindowDefault) class])
+                                kCRToastCaptureDefaultWindowKey             : NSStringFromClass([@(kCRCaptureDefaultWindowDefault) class]),
+                                kCRToastShowButtonsKey                      : NSStringFromClass([@(kCRShowButtonsDefault) class])
                                 };
+
+        
     }
 }
 
@@ -436,6 +442,8 @@ static NSDictionary *                kCRToastKeyClassMap                    = ni
     if (defaultOptions[kCRToastAutorotateKey])                      kCRAutoRotateDefault                    = [defaultOptions[kCRToastAutorotateKey] boolValue];
 
     if (defaultOptions[kCRToastCaptureDefaultWindowKey])            kCRCaptureDefaultWindowDefault          = [defaultOptions[kCRToastCaptureDefaultWindowKey] boolValue];
+    
+    if (defaultOptions[kCRToastShowButtonsKey])                     kCRShowButtonsDefault                   = [defaultOptions [kCRToastShowButtonsKey] boolValue];
 }
 
 #pragma mark - Notification View Helpers
