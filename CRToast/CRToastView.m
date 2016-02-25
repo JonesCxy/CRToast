@@ -122,26 +122,12 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
         self.subtitleLabel = subtitleLabel;
         
         // The view button is purely for show - user cannot interact with it. I do this just so whoever is setting up the notification only needs to add a single tap recognizer.
-        UIButton *viewButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [viewButton setTitle:@"View" forState:UIControlStateNormal];
-        [viewButton.titleLabel setFont:self.toast.font];
-        [viewButton.titleLabel setTextColor:[UIColor blackColor]];
-        [viewButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        viewButton.layer.cornerRadius = 10.0;
-        viewButton.layer.borderColor = [UIColor grayColor].CGColor;
-        viewButton.layer.borderWidth = 1.0;
+        UIButton *viewButton = [self makeButton:@"View"];
         viewButton.userInteractionEnabled = NO;
         [self addSubview:viewButton];
         self.viewButton = viewButton;
         
-        UIButton *dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [dismissButton setTitle:@"Dismiss" forState:UIControlStateNormal];
-        [dismissButton.titleLabel setFont:self.toast.font];
-        [dismissButton.titleLabel setTextColor:[UIColor blackColor]];
-        [dismissButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        dismissButton.layer.cornerRadius = 10.0;
-        dismissButton.layer.borderColor = [UIColor grayColor].CGColor;
-        dismissButton.layer.borderWidth = 1.0;
+        UIButton *dismissButton = [self makeButton:@"Dismiss"];
         [dismissButton addTarget:self action:@selector(onDismissButtonTap:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:dismissButton];
         self.dismissButton = dismissButton;
@@ -149,6 +135,18 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
         self.isAccessibilityElement = YES;
     }
     return self;
+}
+
+- (UIButton *)makeButton:(NSString *)title {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:title forState:UIControlStateNormal];
+    [button.titleLabel setFont:self.toast.font];
+    [button.titleLabel setTextColor:[UIColor blackColor]];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    button.layer.cornerRadius = 10.0;
+    button.layer.borderColor = [UIColor grayColor].CGColor;
+    button.layer.borderWidth = 1.0;
+    return button;
 }
 
 - (void)layoutSubviews {
