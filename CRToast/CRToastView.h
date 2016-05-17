@@ -30,5 +30,6 @@ CGFloat CRContentWidthForAccessoryViewsWithAlignments(CGFloat fullContentWidth, 
 @property (nonatomic, strong) UIButton *viewButton;
 @property (nonatomic, strong) UIButton *dismissButton;
 @property (nonatomic, strong) UIButton *rightButton;
+@property (nonatomic, strong) UIView *slideUpLine;
 
 @end

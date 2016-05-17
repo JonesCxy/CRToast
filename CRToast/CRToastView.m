@@ -145,6 +145,11 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
         [self addSubview:rightButton];
         self.rightButton = rightButton;
         
+        self.slideUpLine = [[UIView alloc] initWithFrame:CGRectZero];
+        self.slideUpLine.userInteractionEnabled = NO;
+        self.slideUpLine.backgroundColor = [UIColor lightGrayColor];
+        [self addSubview:self.slideUpLine];
+        
         self.isAccessibilityElement = YES;
     }
     return self;
@@ -264,6 +269,13 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
         self.rightButton.frame = rightButtonFrame;
         self.rightButton.center = CGPointMake(self.rightButton.center.x, CGRectGetMidY(self.label.frame));
         self.rightButton.layer.cornerRadius = rightButtonSize.height/2;
+     
+        CGFloat slideUpLineWidth = 30.0;
+        CGFloat slideUpLineHeight = 4.0;
+        self.slideUpLine.frame = CGRectMake(0.0, 0.0, slideUpLineWidth, slideUpLineHeight);
+        self.slideUpLine.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMaxY(self.bounds) - preferredPadding);
+        self.slideUpLine.layer.cornerRadius = slideUpLineHeight/2;
+        
         self.viewButton.hidden = true;
         self.dismissButton.hidden = true;
     } else {
