@@ -17,7 +17,7 @@
  @param showingActivityIndicator   @c YES if an activity indicator is being shown and should be accounted for. @c NO otherwise.
  @param activityIndicatorAlignment alignment of activity indicator. Only used if @c showingActivityIndicator is set to @c YES
  */
-CGFloat CRContentWidthForAccessoryViewsWithAlignments(CGFloat fullContentWidth, CGFloat fullContentHeight, CGFloat preferredPadding, BOOL showingImage, CRToastAccessoryViewAlignment imageAlignment, BOOL showingActivityIndicator, CRToastAccessoryViewAlignment activityIndicatorAlignment);
+CGFloat CRContentWidthForAccessoryViewsWithAlignments(CGFloat fullContentWidth, CGFloat fullContentHeight, CGFloat preferredPadding, BOOL showingImage, CRToastAccessoryViewAlignment imageAlignment, BOOL showingActivityIndicator, CRToastAccessoryViewAlignment activityIndicatorAlignment, BOOL showingRightButton, CGSize rightButtonSize, CGFloat rightButtonPadding);
 
 @interface CRToastView : UIView
 @property (nonatomic, strong) CRToast *toast;
@@ -29,5 +29,6 @@ CGFloat CRContentWidthForAccessoryViewsWithAlignments(CGFloat fullContentWidth, 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) UIButton *viewButton;
 @property (nonatomic, strong) UIButton *dismissButton;
+@property (nonatomic, strong) UIButton *rightButton;
 
 @end

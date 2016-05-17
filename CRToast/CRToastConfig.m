@@ -233,6 +233,9 @@ NSString *const kCRToastIdentifierKey                       = @"kCRToastIdentifi
 NSString *const kCRToastCaptureDefaultWindowKey             = @"kCRToastCaptureDefaultWindowKey";
 NSString *const kCRToastShowButtonsKey                      = @"kCRToastShowButtonsKey";
 
+NSString *const kCRToastShowRightButtonKey                  = @"kCRToastShowRightButtonKey";
+NSString *const kCRToastRightButtonTextKey                  = @"kCRToastRightButtonTextKey";
+
 #pragma mark - Option Defaults
 
 static CRToastType                   kCRNotificationTypeDefault             = CRToastTypeStatusBar;
@@ -290,6 +293,9 @@ static BOOL                          kCRAutoRotateDefault                   = YE
 static BOOL                          kCRCaptureDefaultWindowDefault         = YES;
 
 static BOOL                          kCRShowButtonsDefault                  = NO;
+
+static BOOL                          kCRShowRightButtonDefault              = NO;
+static NSString *                    kCRRightButtonTextDefault              = @"View";
 
 static NSDictionary *                kCRToastKeyClassMap                    = nil;
 
@@ -367,8 +373,12 @@ static NSDictionary *                kCRToastKeyClassMap                    = ni
                                 kCRToastAutorotateKey                       : NSStringFromClass([@(kCRAutoRotateDefault) class]),
                                 
                                 kCRToastCaptureDefaultWindowKey             : NSStringFromClass([@(kCRCaptureDefaultWindowDefault) class]),
-                                kCRToastShowButtonsKey                      : NSStringFromClass([@(kCRShowButtonsDefault) class])
+                                kCRToastShowButtonsKey                      : NSStringFromClass([@(kCRShowButtonsDefault) class]),
+                                
+                                kCRToastShowRightButtonKey                  : NSStringFromClass([@(kCRShowRightButtonDefault) class]),
+                                kCRToastRightButtonTextKey                  : NSStringFromClass([NSString class])
                                 };
+        
 
         
     }
@@ -444,6 +454,10 @@ static NSDictionary *                kCRToastKeyClassMap                    = ni
     if (defaultOptions[kCRToastCaptureDefaultWindowKey])            kCRCaptureDefaultWindowDefault          = [defaultOptions[kCRToastCaptureDefaultWindowKey] boolValue];
     
     if (defaultOptions[kCRToastShowButtonsKey])                     kCRShowButtonsDefault                   = [defaultOptions [kCRToastShowButtonsKey] boolValue];
+    
+    if (defaultOptions[kCRToastShowRightButtonKey])                 kCRShowRightButtonDefault = [defaultOptions [kCRToastShowRightButtonKey] boolValue];
+    
+    if (defaultOptions[kCRToastRightButtonTextKey])                 kCRRightButtonTextDefault = defaultOptions[kCRToastRightButtonTextKey];
 }
 
 #pragma mark - Notification View Helpers
@@ -642,6 +656,10 @@ static NSDictionary *                kCRToastKeyClassMap                    = ni
 
 - (UIColor*)textColor {
     return _options[kCRToastTextColorKey] ?: kCRTextColorDefault;
+}
+
+- (NSString *)rightButtonText {
+    return _options[kCRToastRightButtonTextKey] != nil ? _options[kCRToastRightButtonTextKey] : kCRRightButtonTextDefault;
 }
 
 - (NSTextAlignment)textAlignment {
