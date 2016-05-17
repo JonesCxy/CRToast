@@ -203,7 +203,7 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
     CGFloat rightButtonPadding = 10.0;
     if (showingRightButton) {
         [self.rightButton setTitle:self.toast.rightButtonText forState:UIControlStateNormal];
-        rightButtonSize = CGSizeMake(80.0, 40.0);
+        rightButtonSize = CGSizeMake(60.0, 40.0);
     }
 
     CGFloat width = CRContentWidthForAccessoryViewsWithAlignments(CGRectGetWidth(contentFrame),
