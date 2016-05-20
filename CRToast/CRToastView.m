@@ -56,7 +56,10 @@ CGFloat CRContentWidthForAccessoryViewsWithAlignments(CGFloat fullContentWidth,
                                                       BOOL showingImage,
                                                       CRToastAccessoryViewAlignment imageAlignment,
                                                       BOOL showingActivityIndicator,
-                                                      CRToastAccessoryViewAlignment activityIndicatorAlignment)
+                                                      CRToastAccessoryViewAlignment activityIndicatorAlignment,
+                                                      BOOL showingRightButton,
+                                                      CGSize rightButtonSize,
+                                                      CGFloat rightButtonPadding)
 {
     CGFloat width = fullContentWidth;
     
@@ -70,6 +73,10 @@ CGFloat CRContentWidthForAccessoryViewsWithAlignments(CGFloat fullContentWidth,
     if (!showingImage && !showingActivityIndicator) {
         width -= (kCRStatusBarViewNoImageLeftContentInset + kCRStatusBarViewNoImageRightContentInset);
         width -= (preferredPadding + preferredPadding);
+    }
+    
+    if (showingRightButton) {
+        width -= rightButtonSize.width + rightButtonPadding;
     }
     
     return width;
@@ -132,6 +139,17 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
         [self addSubview:dismissButton];
         self.dismissButton = dismissButton;
         
+        // Setting title to empty string here because self.toast is still nil
+        UIButton *rightButton = [self makeButtonWithTitle:@""];
+        rightButton.userInteractionEnabled = NO;
+        [self addSubview:rightButton];
+        self.rightButton = rightButton;
+        
+        self.slideUpLine = [[UIView alloc] initWithFrame:CGRectZero];
+        self.slideUpLine.userInteractionEnabled = NO;
+        self.slideUpLine.backgroundColor = [UIColor lightGrayColor];
+        [self addSubview:self.slideUpLine];
+        
         self.isAccessibilityElement = YES;
     }
     return self;
@@ -185,14 +203,23 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
     }
     
     BOOL showingImage = imageSize.width > 0;
-    
+    BOOL showingRightButton = [self shouldShowRightButton];
+    CGSize rightButtonSize = CGSizeZero;
+    CGFloat rightButtonPadding = 10.0;
+    if (showingRightButton) {
+        [self.rightButton setTitle:self.toast.rightButtonText forState:UIControlStateNormal];
+        rightButtonSize = CGSizeMake(60.0, 40.0);
+    }
+
     CGFloat width = CRContentWidthForAccessoryViewsWithAlignments(CGRectGetWidth(contentFrame),
                                                                   CGRectGetHeight(contentFrame),
                                                                   preferredPadding,
                                                                   showingImage,
                                                                   self.toast.imageAlignment,
                                                                   self.toast.showActivityIndicator,
-                                                                  self.toast.activityViewAlignment);
+                                                                  self.toast.activityViewAlignment,
+                                                                  showingRightButton,
+                                                                  rightButtonSize, rightButtonPadding);
 
     CGFloat buttonHeight = [self shouldShowButtons] ? 40.0 : 0.0;
     // This is zero because the line height of the label text does put some padding between label and buttons
@@ -236,7 +263,23 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
         self.viewButton.frame = CGRectMake(self.toast.preferredPadding, buttonsY, buttonWidth, buttonHeight);
         self.dismissButton.frame = CGRectMake(CGRectGetMaxX(self.viewButton.frame) + buttonSpacing,
                                               buttonsY, buttonWidth, buttonHeight);
+        self.rightButton.hidden = true;
+    } else if (showingRightButton) {
+        CGRect rightButtonFrame = CGRectMake(CGRectGetMaxX(self.label.frame) + rightButtonPadding, self.label.frame.origin.y, rightButtonSize.width, rightButtonSize.height);
+        self.rightButton.frame = rightButtonFrame;
+        self.rightButton.center = CGPointMake(self.rightButton.center.x, CGRectGetMidY(self.label.frame));
+        self.rightButton.layer.cornerRadius = rightButtonSize.height/2;
+     
+        CGFloat slideUpLineWidth = 30.0;
+        CGFloat slideUpLineHeight = 4.0;
+        self.slideUpLine.frame = CGRectMake(0.0, 0.0, slideUpLineWidth, slideUpLineHeight);
+        self.slideUpLine.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMaxY(self.bounds) - preferredPadding);
+        self.slideUpLine.layer.cornerRadius = slideUpLineHeight/2;
+        
+        self.viewButton.hidden = true;
+        self.dismissButton.hidden = true;
     } else {
+        self.rightButton.hidden = true;
         self.viewButton.hidden = true;
         self.dismissButton.hidden = true;
     }
@@ -351,6 +394,10 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
 
 - (BOOL)shouldShowButtons {
     return self.toast.options[kCRToastShowButtonsKey] ? [self.toast.options[kCRToastShowButtonsKey] boolValue] : NO;
+}
+
+- (BOOL)shouldShowRightButton {
+    return self.toast.options[kCRToastShowRightButtonKey] ? [self.toast.options[kCRToastShowRightButtonKey] boolValue] : NO;
 }
 
 @end

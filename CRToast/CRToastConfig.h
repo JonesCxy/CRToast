@@ -370,6 +370,16 @@ extern NSString *const kCRToastCaptureDefaultWindowKey;
  */
 extern NSString *const kCRToastShowButtonsKey;
 
+/**
+ A BOOL setting indicating whether we should show a right-aligned button to the right of the text.
+ */
+extern NSString *const kCRToastShowRightButtonKey;
+
+/**
+ A String setting indicating the text to show in the right button.
+ */
+extern NSString *const kCRToastRightButtonTextKey;
+
 #pragma mark - CRToast Interface
 @interface CRToast : NSObject <UIGestureRecognizerDelegate>
 
@@ -447,6 +457,7 @@ extern NSString *const kCRToastShowButtonsKey;
 @property (nonatomic, readonly) CRToastAccessoryViewAlignment activityViewAlignment;
 @property (nonatomic, readonly) BOOL showActivityIndicator;
 @property (nonatomic, readonly) BOOL forceUserInteraction;
+@property (nonatomic, readonly) NSString *rightButtonText;
 
 @property (nonatomic, readonly) CGVector inGravityDirection;
 @property (nonatomic, readonly) CGVector outGravityDirection;
