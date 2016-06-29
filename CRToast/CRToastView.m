@@ -120,6 +120,9 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.userInteractionEnabled = NO;
+        label.adjustsFontSizeToFitWidth = YES;
+        label.lineBreakMode = NSLineBreakByTruncatingTail;
+        label.minimumScaleFactor =   0.4;
         [self addSubview:label];
         self.label = label;
         
