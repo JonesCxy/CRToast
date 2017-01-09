@@ -387,6 +387,8 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
             [self insertSubview:_backgroundView atIndex:0];
         }
     }
+    
+    _rightButton.titleLabel.font = toast.font;
 }
 
 #pragma mark - Button taps
