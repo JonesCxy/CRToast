@@ -150,7 +150,7 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
         
         self.slideUpLine = [[UIView alloc] initWithFrame:CGRectZero];
         self.slideUpLine.userInteractionEnabled = NO;
-        self.slideUpLine.backgroundColor = [UIColor lightGrayColor];
+        self.slideUpLine.backgroundColor = [UIColor colorWithRed:0.00 green:0.00 blue:0.00 alpha:0.3];
         [self addSubview:self.slideUpLine];
         
         self.isAccessibilityElement = YES;
@@ -162,10 +162,7 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
     [button.titleLabel setFont:self.toast.font];
-    [button.titleLabel setTextColor:[UIColor blackColor]];
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     button.layer.cornerRadius = 10.0;
-    button.layer.borderColor = [UIColor grayColor].CGColor;
     button.layer.borderWidth = 1.0;
     return button;
 }
@@ -389,6 +386,8 @@ static CGFloat CRCenterXForActivityIndicatorWithAlignment(CRToastAccessoryViewAl
     }
     
     _rightButton.titleLabel.font = toast.font;
+    _rightButton.layer.borderColor = toast.textColor.CGColor;
+
 }
 
 #pragma mark - Button taps
